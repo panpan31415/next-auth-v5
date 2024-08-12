@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import Header from "@/components/auth/header";
 import Social from "@/components/auth/social";
+import BackButton from "./back-button";
 
 type CardWrapperProps = {
     children: ReactNode;
@@ -28,6 +29,12 @@ export default function CardWrapper({
                     <Social />
                 </CardFooter>
             )}
+            <CardFooter>
+                <BackButton
+                    label={backButtonLabel}
+                    href={backButtonHerf}
+                />
+            </CardFooter>
         </Card>
     );
 }
