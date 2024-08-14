@@ -6,12 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { login } from "@/actions/login";
 import { useState, useTransition } from "react";
-import { Form } from "../ui/form";
-import EmailField from "./email-field";
-import PasswordField from "./password-field";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import FormError from "../form-error";
 import FormSuccess from "../form-success";
 import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 export default function LoginForm() {
     const [isPending, startTransition] = useTransition();
@@ -49,13 +48,41 @@ export default function LoginForm() {
                     onSubmit={form.handleSubmit(onSubmit)}
                     className='space-y-6'>
                     <div className='space-y-4'>
-                        <EmailField
+                        <FormField
                             control={form.control}
-                            disabled={isPending}
+                            name='email'
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            placeholder='john@example.com'
+                                            type='email'
+                                            disabled={isPending}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
-                        <PasswordField
+                        <FormField
                             control={form.control}
-                            disabled={isPending}
+                            name='password'
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Password</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            placeholder='******'
+                                            type='password'
+                                            disabled={isPending}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
                     </div>
                     <FormError message={error} />
