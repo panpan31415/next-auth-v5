@@ -4,14 +4,20 @@ import { LoginFormValues } from "@/lib/types";
 import { LoginSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Form } from "@/components/ui/form";
-import EmailField from "@/components/auth/email-field";
-import PasswordField from "@/components/auth/password-field";
-import { Button } from "@/components/ui/button";
-import FormError from "@/components/form-error";
+import { login } from "@/actions/login";
+import { useState, useTransition } from "react";
+import { Form } from "../ui/form";
+import EmailField from "./email-field";
+import PasswordField from "./password-field";
+import FormError from "../form-error";
 import FormSuccess from "../form-success";
+import { Button } from "../ui/button";
 
 export default function LoginForm() {
+    const [isPending, startTransition] = useTransition();
+    const [error, setError] = useState<string>();
+    const [success, setSuccess] = useState<string>();
+
     const form = useForm<LoginFormValues>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
@@ -20,7 +26,17 @@ export default function LoginForm() {
         },
     });
 
-    const onSubmit = (values: LoginFormValues) => {};
+    const onSubmit = (values: any) => {
+        // values: LoginFormValues
+        setError("");
+        setSuccess("");
+        startTransition(() => {
+            login(values).then((data) => {
+                setSuccess(data.success);
+                setError(data.error);
+            });
+        });
+    };
 
     return (
         <CardWrapper
@@ -30,17 +46,22 @@ export default function LoginForm() {
             showSocial>
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(() => {
-                        console.log("form submit function");
-                    })}
+                    onSubmit={form.handleSubmit(onSubmit)}
                     className='space-y-6'>
                     <div className='space-y-4'>
-                        <EmailField control={form.control} />
-                        <PasswordField control={form.control} />
+                        <EmailField
+                            control={form.control}
+                            disabled={isPending}
+                        />
+                        <PasswordField
+                            control={form.control}
+                            disabled={isPending}
+                        />
                     </div>
-                    <FormError message='this is an error' />
-                    <FormSuccess message='success' />
+                    <FormError message={error} />
+                    <FormSuccess message={success} />
                     <Button
+                        disabled={isPending}
                         type='submit'
                         className='w-full'>
                         Login

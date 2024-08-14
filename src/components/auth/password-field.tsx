@@ -6,8 +6,9 @@ import { LoginFormValues } from "@/lib/types";
 
 type PasswordFieldProps = {
     control?: Control<LoginFormValues>;
+    disabled?: boolean;
 };
-export default function PasswordField({ control }: PasswordFieldProps) {
+export default function PasswordField({ control, disabled = false }: PasswordFieldProps) {
     return (
         <FormField
             control={control}
@@ -20,6 +21,7 @@ export default function PasswordField({ control }: PasswordFieldProps) {
                             {...field}
                             placeholder='******'
                             type='password'
+                            disabled={disabled}
                         />
                     </FormControl>
                     <FormMessage />

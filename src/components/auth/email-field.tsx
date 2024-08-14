@@ -6,8 +6,9 @@ import { LoginFormValues } from "@/lib/types";
 
 type EmailFieldProps = {
     control?: Control<LoginFormValues>;
+    disabled?: boolean;
 };
-export default function EmailField({ control }: EmailFieldProps) {
+export default function EmailField({ control, disabled = false }: EmailFieldProps) {
     return (
         <FormField
             control={control}
@@ -20,6 +21,7 @@ export default function EmailField({ control }: EmailFieldProps) {
                             {...field}
                             placeholder='john@example.com'
                             type='email'
+                            disabled={disabled}
                         />
                     </FormControl>
                     <FormMessage />
