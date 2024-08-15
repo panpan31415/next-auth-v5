@@ -23,7 +23,7 @@ export async function register(values: RegisterFormValues) {
     const user = await prisma.user.create({
         data: { email, name, pswHash },
     });
-    console.log("user is created", user);
+
     // TODO: Send verification token email
 
     return {
